@@ -17,4 +17,8 @@ public class PalindromTest {
         var palindrom = new Palindrom("Moges");
         assertThat(palindrom.isPalindrom()).isFalse();
     }
+    @Test
+    void eenLegeStringIsEenPalindroom() {
+        assertThat(new Palindrom("").isPalindrom()).isTrue();
+    }
 }
