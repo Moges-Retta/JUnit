@@ -12,8 +12,4 @@ public class Palindrom {
         var rt = str.reverse().toString().toLowerCase();
         return ot.equals(rt);
     }
-    @Override
-    public String toString() {
-        return woord;
-    }
 }
