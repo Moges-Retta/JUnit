@@ -6,13 +6,14 @@ public class Jaar {
         this.jaar = jaar;
     }
     public boolean isSchrikkeljaar() {
-        if (jaar % 400 == 0) {
+        return jaar % 4 == 0 && jaar % 100 != 0 || jaar % 400 == 0;
+        /*if (jaar % 400 == 0) {
             return true;
         }
         if (jaar % 100 == 0) {
             return false;
         }
-        return jaar % 4 == 0;
+        return jaar % 4 == 0;*/
     }
     @Override
     public String toString() {
