@@ -3,6 +3,8 @@ package be.vdab.theorie;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import util.ISBNException;
 
 import static org.assertj.core.api.Assertions.*;
@@ -37,6 +39,12 @@ public class ISBNTest {
     public void eerste3cijfers980(){
         assertThatExceptionOfType(ISBNException.class)
                 .isThrownBy( ()->ISBN.controlISBN(9803161484100L));
+    }
+    @ParameterizedTest
+    @ValueSource(longs = { 9773161484100L, 9803161484100L })
+    void eerste3cijfersNiet980Of977(long nummer) {
+        assertThatExceptionOfType(ISBNException.class)
+                .isThrownBy( ()->ISBN.controlISBN(nummer));
     }
     @Test
     public void isbnVoldoetControl(){
