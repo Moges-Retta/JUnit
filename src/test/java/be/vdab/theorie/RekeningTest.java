@@ -10,42 +10,80 @@ import static org.assertj.core.api.Assertions.*;
 
 class RekeningTest {
     private Rekening rekening;
+
     @BeforeEach
-    void beforeEach(){
-         rekening = new Rekening();
+    void beforeEach() {
+        rekening = new Rekening();
     }
+
     @Test
     void hetSaldoVanEenNieuweRekeningIs0€() {
         assertThat(rekening.getSaldo()).isZero();
     }
+
     @Test
     void nadatJe10€StortIsHetSaldo10€() {
         rekening.stort(BigDecimal.TEN);
         assertThat(rekening.getSaldo()).isEqualByComparingTo("10");
     }
+
     @Test
     void nadatJe10€En1€StortIsHetSaldo11€() {
         rekening.stort(BigDecimal.TEN);
         rekening.stort(BigDecimal.ONE);
         assertThat(rekening.getSaldo()).isEqualByComparingTo("11");
     }
+
     @Test
     void hetGestorteBedragMagNietNulZijn() {
         assertThatIllegalArgumentException().isThrownBy(
-        () -> rekening.stort(BigDecimal.ZERO));
+                () -> rekening.stort(BigDecimal.ZERO));
     }
+
     @Test
     void hetGestortBedragMagNietNegatiefZijn() {
         assertThatIllegalArgumentException().isThrownBy(
                 () -> rekening.stort(BigDecimal.valueOf(-1)));
     }
+
     @Test
     void stortMetNullKanNiet() {
         assertThatNullPointerException().isThrownBy(() -> rekening.stort(null));
     }
+
     @Test
     void saldoTeWeinig() {
         assertThatExceptionOfType(OnvoldoendeSaldoException.class)
                 .isThrownBy(() -> rekening.haalAf(BigDecimal.TEN));
+    }
+
+    private static final BigDecimal TWEE = BigDecimal.valueOf(2);
+
+    @Test
+    void eenNieuweRekeningHeeftGeenStortingen() {
+        assertThat(rekening.getStortingen()).isEmpty();
+    }
+
+    @Test
+    void nadatJe10€StortIsErEenStortingVan10€() {
+        rekening.stort(BigDecimal.TEN);
+        assertThat(rekening.getStortingen()).containsOnly(BigDecimal.TEN);
+    }
+
+    @Test
+    void nadatJe10€En1€StortZijnDeStortingen10€En1€() {
+        rekening.stort(BigDecimal.TEN);
+        rekening.stort(BigDecimal.ONE);
+        assertThat(rekening.getStortingen())
+                .containsExactly(BigDecimal.TEN, BigDecimal.ONE);
+    }
+
+    @Test
+    void nadatJe10€En1€En2€StortZijnDeStortingenGesorteerd1€En2€En10€() {
+        rekening.stort(BigDecimal.TEN);
+        rekening.stort(BigDecimal.ONE);
+        rekening.stort(TWEE);
+        assertThat(rekening.getStortingenGesorteerd()).isSorted()
+                .containsExactly(BigDecimal.ONE, TWEE, BigDecimal.TEN);
     }
 }
