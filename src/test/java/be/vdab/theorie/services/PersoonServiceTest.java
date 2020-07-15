@@ -43,5 +43,4 @@ public class PersoonServiceTest {
         assertThat(service.standaardAfwijkingWeddes()).isEqualByComparingTo("2");
         verify(repository).findAllWeddes();
     }
-
 }

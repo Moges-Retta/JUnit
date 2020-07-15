@@ -12,7 +12,7 @@ public class WinstService {
         this.obrengst=obrengst;
         this.kost=kost;
     }
-    BigDecimal getWinst(){
+    public BigDecimal getWinst(){
         return obrengst.findTotaleOpbrengst().subtract(kost.findTotaleKost());
     }
 }
